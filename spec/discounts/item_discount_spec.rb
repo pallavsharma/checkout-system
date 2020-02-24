@@ -5,11 +5,11 @@ describe ItemDiscount do
 
   describe '#apply' do
     it 'is expected to apply the discount on orders which contain more than the 3 of items' do
-      expect(item_discount.apply(ITEM: 4)).to eq 2
+      expect(item_discount.apply(AP1: 4)).to eq 2
     end
 
     it 'is expected to apply no discount on orders which contain less than the 3 of items' do
-      expect(item_discount.apply(ITEM: 2)).to eq 0
+      expect(item_discount.apply(AP1: 2)).to eq 0
     end
   end
 end
