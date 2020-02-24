@@ -5,7 +5,7 @@ class ItemDiscount
     @discount = discount
   end
 
-  def apply(order)
+  def apply(order, products=nil)
     should_discount_be_applied?(order) ? apply_discount(order) : 0
   end
 
