@@ -27,7 +27,7 @@ class Checkout
 
   def discounts
     pricing_rules.reduce(0) do |discount, rule|
-      discount += rule.apply(order, products)
+      discount += rule.apply({order: order, products: products})
     end
   end
 

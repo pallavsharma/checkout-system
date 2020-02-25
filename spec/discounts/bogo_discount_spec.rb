@@ -7,11 +7,11 @@ describe BogoDiscount do
 
   describe '#apply' do
     it 'is expected to apply the bogo discount on orders' do
-      expect(bogo_discount.apply({FR1: 2}, products)).to eq 3.11
+      expect(bogo_discount.apply({order: {FR1: 2}, products: products})).to eq 3.11
     end
 
     it 'is expected to apply no bogo discount on orders which contain less than the number of items' do
-      expect(bogo_discount.apply({FR1: 1}, products)).to eq 0
+      expect(bogo_discount.apply({order: {FR1: 1}, products: products})).to eq 0
     end
   end
 end

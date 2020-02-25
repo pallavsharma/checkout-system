@@ -1,10 +1,8 @@
-class BogoDiscount
+require_relative 'base_discount'
+
+class BogoDiscount < BaseDiscount
   def initialize(item_code:)
     @item_code = item_code.to_sym
-  end
-
-  def apply(order, products=nil)
-    should_discount_be_applied?(order) ? apply_discount(order, products) : 0
   end
 
   private
@@ -15,7 +13,7 @@ class BogoDiscount
     order[item_code] >= 2
   end
 
-  def apply_discount(order, products)
-    (order[item_code] / 2).floor * products.get_price(item_code)
+  def apply_discount(args={})
+    (args[:order][item_code] / 2).floor * args[:products].get_price(item_code)
   end
 end
