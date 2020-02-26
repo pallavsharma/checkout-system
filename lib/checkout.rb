@@ -1,9 +1,10 @@
-class Checkout
-  PRODUCTS = {FR1: 3.11, AP1: 5.00, CF1: 11.23}
+require_relative 'product'
 
+class Checkout
   def initialize(pricing_rules = nil)
     @pricing_rules = pricing_rules
     @order = Hash.new(0)
+    @products = Product.new({FR1: 3.11, AP1: 5.00, CF1: 11.23})
   end
 
   def scan(item_code)
@@ -18,25 +19,25 @@ class Checkout
 
   private
 
-  attr_reader :order, :pricing_rules
+  attr_reader :order, :pricing_rules, :products
 
   def order_cost
-    apply_discounts(sum_without_discounts(order), order).round(2)
+    (sum_without_discounts - discounts).round(2)
   end
 
-  def apply_discounts(cost_before_discounts, order)
-    pricing_rules.reduce(cost_before_discounts) do |current_total, rule|
-      current_total - rule.apply(order)
+  def discounts
+    pricing_rules.reduce(0) do |discount, rule|
+      discount += rule.apply({order: order, products: products})
     end
   end
 
-  def sum_without_discounts(order)
-    order.reduce(0) do |sum, (item, price)|
-      sum += PRODUCTS[item] * price
+  def sum_without_discounts
+    order.reduce(0) do |sum, (item, num)|
+      sum += products.get_price(item) * num
     end
   end
 
   def item_in_products?(item_code)
-    PRODUCTS.keys.include?(item_code)
+    products.find_by_item item_code
   end
 end
